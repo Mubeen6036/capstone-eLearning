@@ -47,8 +47,8 @@ Bootstrap 5 HTML CSS Template
         <section class="booking-section section-padding2">
             <div id="sticky-wrapper" class="sticky-wrapper" style="height: 154px;"><nav class="navbar navbar-expand-lg">
                 <div class="container">
-                    <a class="navbar-brand d-flex align-items-center" href="index.html">
-                        <img src="../images/coffee-beans.png" class="navbar-brand-image img-fluid" alt="Barista Cafe Template">
+                    <a class="navbar-brand d-flex align-items-center" th:href="@{/}">
+                        <img th:src="@{/images/coffee-beans.png}" class="navbar-brand-image img-fluid" alt="Barista Cafe Template">
                         E learning
                     </a>
     
@@ -59,15 +59,15 @@ Bootstrap 5 HTML CSS Template
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav ms-lg-auto">
                             <li class="nav-item">
-                                <a class="nav-link click-scroll active" href="index.html">Home</a>
+                                <a class="nav-link click-scroll active" th:href="@{/}">Home</a>
                             </li>
     
                             <li class="nav-item">
-                                <a class="nav-link click-scroll inactive" href="courses.html">Courses</a>
+                                <a class="nav-link click-scroll inactive" th:href="@{/courses}">Courses</a>
                             </li>
     
                             <li class="nav-item">
-                                <a class="nav-link click-scroll inactive" href="faculty.html">Faculties</a>
+                                <a class="nav-link click-scroll inactive" th:href="@{/faculty}">Faculties</a>
                             </li>
     
                             <li class="nav-item">
@@ -75,13 +75,13 @@ Bootstrap 5 HTML CSS Template
                             </li>                        
                         </ul>
                         <div class="ms-lg-3">
-                            <a class="btn custom-btn custom-border-btn" href="registration.html">
+                            <a class="btn custom-btn custom-border-btn" th:href="@{/registration}">
                                 Rregistration
                                 <i class="bi-arrow-up-right ms-2"></i>
                             </a>
                         </div>
                         <div class="ms-lg-3">
-                            <a class="btn custom-btn custom-border-btn2" href="signIn.html">
+                            <a class="btn custom-btn custom-border-btn2" href="@{/faculty}">
                                 Sign in
                                
                             </a>
@@ -101,7 +101,7 @@ Bootstrap 5 HTML CSS Template
                         <div class="container">
                             <div class="row justify-content-center">
                                 <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                    <a href="Ethan.html">
+                                    <a th:href="@{/ethan}">
                                         <div class="team-block-wrap">
                                             <div class="team-block-info d-flex flex-column">
                                                 <div class="d-flex mt-auto mb-3">
@@ -110,13 +110,13 @@ Bootstrap 5 HTML CSS Template
                                                 <p class="text-white mb-0">Ph.D. in Computer Science</p>
                                             </div>
                                             <div class="team-block-image-wrap">
-                                                <img src="../images/team/Ethan.jpg" class="team-block-image img-fluid" alt="">
+                                                <img th:src="@{/images/team/Ethan.jpg}" class="team-block-image img-fluid" alt="">
                                             </div>
                                         </div>
                                     </a>
                                 </div>
                                 <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                    <a href="Emily.html" class="team-block-wrap">
+                                    <a th:href="@{/emily}" class="team-block-wrap">
                                         <div class="team-block-info2 d-flex flex-column">
                                             <div class="d-flex mt-auto mb-3">
                                                 <h5 class="text-white mb-0">Dr. Emily Thompson</h5>
@@ -124,12 +124,12 @@ Bootstrap 5 HTML CSS Template
                                             <p class="text-white mb-0">Ph.D. in Civil Engineering</p>
                                         </div>
                                         <div class="team-block-image-wrap">
-                                            <img src="../images/team/Emily.jpg" class="team-block-image img-fluid" alt="">
+                                            <img th:src="@{/images/team/Emily.jpg}" class="team-block-image img-fluid" alt="">
                                         </div>
                                     </a>
                                 </div>
                                 <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                    <a href="Lucas.html" class="team-block-wrap">
+                                    <a th:href="@{/lucas}" class="team-block-wrap">
                                         <div class="team-block-wrap">
                                             <div class="team-block-info3 d-flex flex-column">
                                                 <div class="d-flex mt-auto mb-3">
@@ -141,13 +141,13 @@ Bootstrap 5 HTML CSS Template
                                                 </p>
                                             </div>
                                             <div class="team-block-image-wrap">
-                                                <img src="../images/team/Lucas.jpg" class="team-block-image img-fluid" alt="">
+                                                <img th:src="@{/images/team/Lucas.jpg}" class="team-block-image img-fluid" alt="">
                                             </div>
                                         </div>
                                     </a>
                                 </div>
                                 <div class="col-lg-3 col-md-6 col-12">
-                                    <a href="Amanda.html" class="team-block-wrap">
+                                    <a th:href="@{/amanda}" class="team-block-wrap">
                                         <div class="team-block-wrap">
                                             <div class="team-block-info4 d-flex flex-column">
                                                 <div class="d-flex mt-auto mb-3">
@@ -158,13 +158,13 @@ Bootstrap 5 HTML CSS Template
                                             </div>
 
                                             <div class="team-block-image-wrap">
-                                                <img src="../images/team/Amanda.jpg" class="team-block-image img-fluid" alt="">
+                                                <img th:src="@{/images/team/Amanda.jpg}" class="team-block-image img-fluid" alt="">
                                             </div>
                                         </div>
                                     </a>
                                 </div>
                                 <div class="col-lg-3 col-md-6 col-12">
-                                    <a href="David.html" class="team-block-wrap">
+                                    <a th:href="@{/david}" class="team-block-wrap">
                                         <div class="team-block-wrap">
                                             <div class="team-block-info4 d-flex flex-column">
                                                 <div class="d-flex mt-auto mb-3">
@@ -176,13 +176,13 @@ Bootstrap 5 HTML CSS Template
                                             </div>
 
                                             <div class="team-block-image-wrap">
-                                                <img src="../images/team/David.jpg" class="team-block-image img-fluid" alt="">
+                                                <img th:src="@{/images/team/David.jpg}" class="team-block-image img-fluid" alt="">
                                             </div>
                                         </div>
                                     </a>
                                 </div>
                                 <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                    <a href="Adam.html" class="team-block-wrap">
+                                    <a th:href="@{/adam}" class="team-block-wrap">
                                         <div class="team-block-wrap">
                                             <div class="team-block-info2 d-flex flex-column">
                                                 <div class="d-flex mt-auto mb-3">
@@ -191,13 +191,13 @@ Bootstrap 5 HTML CSS Template
                                                 <p class="text-white mb-0">Doctor of Business Administration (DBA)</p>
                                             </div>
                                             <div class="team-block-image-wrap">
-                                                <img src="../images/team/Adam.jpg" class="team-block-image img-fluid" alt="">
+                                                <img th:src="@{/images/team/Adam.jpg}" class="team-block-image img-fluid" alt="">
                                             </div>
                                         </div>
                                     </a>
                                 </div>
                                 <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                    <a href="Nathan.html" class="team-block-wrap">
+                                    <a th:href="@{/nathan}" class="team-block-wrap">
                                         <div class="team-block-wrap">
                                             <div class="team-block-info d-flex flex-column">
                                                 <div class="d-flex mt-auto mb-3">
@@ -206,13 +206,13 @@ Bootstrap 5 HTML CSS Template
                                                 <p class="text-white mb-0"> Master of Business Administration (MBA)</p>
                                             </div>
                                             <div class="team-block-image-wrap">
-                                                <img src="../images/team/Nathan.jpg" class="team-block-image img-fluid" alt="">
+                                                <img th:src="@{/images/team/Nathan.jpg}" class="team-block-image img-fluid" alt="">
                                             </div>
                                         </div>
                                     </a>
                                 </div>
                                 <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                    <a href="Sarah.html" class="team-block-wrap">
+                                    <a th:href="@{/sarah}" class="team-block-wrap">
                                         <div class="team-block-wrap">
                                             <div class="team-block-info3 d-flex flex-column">
                                                 <div class="d-flex mt-auto mb-3">
@@ -223,7 +223,7 @@ Bootstrap 5 HTML CSS Template
                                                 </p>
                                             </div>
                                             <div class="team-block-image-wrap">
-                                                <img src="../images/team/Sarah.jpg" class="team-block-image img-fluid" alt="">
+                                                <img th:src="@{/images/team/Sarah.jpg}" class="team-block-image img-fluid" alt="">
                                             </div>
                                         </div>
                                     </a>

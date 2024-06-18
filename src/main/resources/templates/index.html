@@ -42,8 +42,8 @@ Bootstrap 5 HTML CSS Template
     <main>
         <nav class="navbar navbar-expand-lg">
             <div class="container">
-                <a class="navbar-brand d-flex align-items-center" href="index.html">
-                    <img src="../images/coffee-beans.png" class="navbar-brand-image img-fluid" alt="Barista Cafe Template">
+                <a class="navbar-brand d-flex align-items-center" th:href="@{/}">
+                    <img th:src="@{/images/coffee-beans.png}" class="navbar-brand-image img-fluid" alt="Barista Cafe Template">
                     E learning
                 </a>
 
@@ -54,8 +54,8 @@ Bootstrap 5 HTML CSS Template
 
                 <div class="collapse navbar-collapse" id="navbarNav"><div id="sticky-wrapper" class="sticky-wrapper" style="height: 154px;"><nav class="navbar navbar-expand-lg">
                     <div class="container">
-                        <a class="navbar-brand d-flex align-items-center" href="index.html">
-                            <img src="../images/coffee-beans.png" class="navbar-brand-image img-fluid" alt="Barista Cafe Template">
+                        <a class="navbar-brand d-flex align-items-center" th:href="@{/}">
+                            <img th:src="@{/images/coffee-beans.png}" class="navbar-brand-image img-fluid" alt="Barista Cafe Template">
                             E learning
                         </a>
         
@@ -66,24 +66,24 @@ Bootstrap 5 HTML CSS Template
                         <div class="collapse navbar-collapse" id="navbarNav">
                             <ul class="navbar-nav ms-lg-auto">
                                 <li class="nav-item">
-                                    <a class="nav-link click-scroll active" href="#section_1">Home</a>
+                                    <a class="nav-link click-scroll active" th:href="@{/index}">Home</a>
                                 </li>
         
                                 <li class="nav-item">
-                                    <a class="nav-link click-scroll inactive" href="@{/courses}">Courses</a>
+                                    <a class="nav-link click-scroll inactive" th:href="@{/courses}">Courses</a>
                                 </li>
         
                                 <li class="nav-item">
-                                    <a class="nav-link click-scroll inactive" href="@{faculty}">Faculties</a>
+                                    <a class="nav-link click-scroll inactive" th:href="@{/faculty}">Faculties</a>
                                 </li>
         
                                 <li class="nav-item">
-                                    <a class="nav-link click-scroll inactive" href="#section_4">About Us</a>
+                                    <a class="nav-link click-scroll inactive" th:href="@{/}">About Us</a>
                                 </li>                        
                             </ul>
                             <div class="ms-lg-3">
                                 <a class="btn custom-btn custom-border-btn" th:href="@{/registration}">
-                                    Rregistration
+                                    Registration
                                     <i class="bi-arrow-up-right ms-2"></i>
                                 </a>
                             </div>
@@ -98,26 +98,26 @@ Bootstrap 5 HTML CSS Template
                 </nav></div>
                     <ul class="navbar-nav ms-lg-auto">
                         <li class="nav-item">
-                            <a class="nav-link click-scroll" href="#section_1">Home</a>
+                            <a class="nav-link click-scroll" th:href="@{/}">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link click-scroll" href="courses.html">Courses</a>
+                            <a class="nav-link click-scroll" th:href="@{/courses}">Courses</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link click-scroll" href="faculty.html">Faculties</a>
+                            <a class="nav-link click-scroll" th:href="@{/faculty}">Faculties</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link click-scroll" href="#section_4">About Us</a>
+                            <a class="nav-link click-scroll" th:href="@{/}">About Us</a>
                         </li>                        
                     </ul>
                     <div class="ms-lg-3">
-                        <a class="btn custom-btn custom-border-btn" href="registration.html">
-                            Rregistration
+                        <a class="btn custom-btn custom-border-btn" th:href="@{/registration}">
+                            Registration
                             <i class="bi-arrow-up-right ms-2"></i>
                         </a>
                     </div>
                     <div class="ms-lg-3">
-                        <a class="btn custom-btn custom-border-btn2" href="signIn.html">
+                        <a class="btn custom-btn custom-border-btn2" th:href="@{/signIn}">
                             Sign in
                            
                         </a>
@@ -125,7 +125,7 @@ Bootstrap 5 HTML CSS Template
                 </div>
             </div>
         </nav>
-        <img src="../images/sincere-laugh-showing-picture-smartphone-casual-meeting-with-best-friends-restaurant-terrace.gif"
+        <img th:src="@{/images/sincere-laugh-showing-picture-smartphone-casual-meeting-with-best-friends-restaurant-terrace.gif}"
             width="100%" height="10%" style="
                 width: 1536px;
                 height: 668px;

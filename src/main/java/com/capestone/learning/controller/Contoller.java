@@ -21,8 +21,46 @@ public class Contoller {
     @Autowired
     LoginService loginService;
 
-    @GetMapping("/")
+    @GetMapping("/home")
     public String home(Model model) {
+        return "index";
+    }
+
+    @GetMapping("/adam")
+    public String adam(Model model) {
+        return "adam";
+    }
+
+    @GetMapping("/amanda")
+    public String amanda(Model model) {
+        return "amanda";
+    }
+    @GetMapping("/david")
+    public String david(Model model) {
+        return "david";
+    }
+    @GetMapping("/emily")
+    public String emily(Model model) {
+        return "emily";
+    }
+    @GetMapping("/ethan")
+    public String ethan(Model model) {
+        return "ethan";
+    }
+    @GetMapping("/lucas")
+    public String lucas(Model model) {
+        return "lucas";
+    }
+    @GetMapping("/nathan")
+    public String nathan(Model model) {
+        return "nathan";
+    }
+    @GetMapping("/sarah")
+    public String sarah(Model model) {
+        return "sarah";
+    }
+    @GetMapping("/index")
+    public String index(Model model) {
         return "index";
     }
 
@@ -40,6 +78,10 @@ public class Contoller {
         return "courses";
     }
 
+    @GetMapping("/faculty")
+    public String faculty(Model model) {
+        return "faculty";
+    }
 
     @PostMapping("/addUser")
     @ResponseBody
