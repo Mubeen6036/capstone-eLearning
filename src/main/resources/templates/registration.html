@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>Registration</title>
+
+        <!-- CSS FILES -->                
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200;0,400;0,600;0,700;1,200;1,700&display=swap" rel="stylesheet">
+
+        <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+
+        <link th:href="@{/css/bootstrap-icons.css}" rel="stylesheet">
+
+        <link th:href="@{/css/vegas.min.css}" rel="stylesheet">
+
+        <link th:href="@{/css/tooplate-barista.css}" rel="stylesheet">
+<!--
+
+Tooplate 2137 Barista
+
+https://www.tooplate.com/view/2137-barista-cafe
+
+Bootstrap 5 HTML CSS Template
+
+-->
+    </head>
+    
+    <body class="reservation-page">
+                
+            <main>
+                <nav class="navbar navbar-expand-lg">                
+                  
+                    </div>
+                </nav>
+                
+
+                <section class="booking-section section-padding">
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col-lg-10 col-12 mx-auto">
+                            <div class="booking-form-wrap">
+                                <div class="row">
+                                    <div class="col-lg-7 col-12 p-0">
+                                        <form class="custom-form booking-form" id="registration-form" onsubmit="event.preventDefault(); addUser();" role="form">
+                                            <div class="text-center mb-4 pb-lg-2">
+                                                <em class="text-white">Fill out the Registration form</em>
+
+                                                <h2 class="text-white">Registration</h2>
+                                            </div>
+
+                                            <div class="booking-form-body">
+                                                <div class="row">
+                                                    <div class="col-lg-6 col-12">
+                                                        <input type="text" name="firstName" id="booking-form-name" class="form-control" placeholder="First Name" required>
+                                                    </div>
+                                                    <div class="col-lg-6 col-12">
+                                                        <input type="text" name="lastName" id="booking-form-last-name" class="form-control" placeholder="Last Name" required>
+                                                    </div>
+                                                    <div class="col-lg-12 col-12">
+                                                        <input type="tel" class="form-control" id="mobile" name="mobile" placeholder="Mobile number" required>
+                                                    </div>
+                                                    <div class="col-lg-12 col-12">
+                                                        <input type="email" name="email" id="booking-form-email" class="form-control" placeholder="Email" required>
+                                                        <input type="password" name="password" id="booking-form-password" class="form-control" placeholder="Password" required>
+                                                        <input type="password" name="booking-form-confirm-password" id="booking-form-confirm-password" class="form-control" placeholder="Re-enter Password" required>
+                                                    </div>
+
+                                                    <div class="col-lg-4 col-md-10 col-8 mx-auto mt-2">
+                                                        <button type="submit" class="form-control">Submit</button>
+                                                    </div>
+                                                    <div class="col-lg-4 col-md-10 col-8 mx-auto mt-2">
+                                                        <button type="Cancel" class="form-control" id="cancel-button">Cancel</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <div id="loader" class="loader"></div>
+                                    </div>
+
+                                    <div class="col-lg-5 col-12 p-0">
+                                        <div class="booking-form-image-wrap">
+                                            <img src="../images/barman-with-fruits.jpg" class="booking-form-image img-fluid" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>       
+            </main>
+
+        <!-- JAVASCRIPT FILES -->
+            <script th:src="@{/js/jquery.min.js}"></script>
+            <script th:src="@{/js/bootstrap.min.js}"></script>
+            <script th:src="@{/js/jquery.sticky.js}"></script>
+            <script th:src="@{/js/vegas.min.js}"></script>
+            <script th:src="@{/js/custom.js}"></script>
+
+        <!-- Custom JavaScript to handle form submission -->
+        <script>
+             // Add event listener for the Cancel button
+             document.getElementById('cancel-button').addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent any default behavior (though not strictly necessary for button type="button")
+                window.location.href = '/'; // Redirect to index.html
+            });
+            function addUser() {
+            document.getElementById('loader').style.display = 'block';
+            var user = {
+                firstName: document.getElementById('booking-form-name').value,
+                lastName: document.getElementById('booking-form-last-name').value,
+                email: document.getElementById('booking-form-email').value,
+                mobile: document.getElementById('mobile').value,
+                password: document.getElementById('booking-form-password').value
+                // Add other fields as needed
+            };
+
+            fetch('/addUser', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(user),
+            })
+            .then(response => {
+            document.getElementById('loader').style.display = 'none';
+                if (response.ok) {
+                    return response.text();
+                } else {
+                    throw new Error('Failed to add user');
+                }
+            })
+            .then(data => {
+                alert(data); // Show the response message in a popup
+                window.location.href = '/signIn'; // Redirect to another page
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to add user'); // Show an error message in case of failure
+            }).finally(() => {
+                // Hide the loader
+
+            });
+        }
+        </script>
+    </body>
+</html>
