@@ -1,6 +1,10 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
     <head>
+            <!-- Other meta tags -->
+            <meta name="_csrf" th:content="${_csrf.token}" />
+            <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+            <!-- Other CSS and JavaScript links -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -60,6 +64,7 @@ Bootstrap 5 HTML CSS Template
 
                                             <div class="booking-form-body">
                                                 <div class="row">
+                                                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                                                     <div class="col-lg-6 col-12">
                                                         <input type="text" name="firstName" id="booking-form-name" class="form-control" placeholder="First Name" required>
                                                     </div>
@@ -113,43 +118,48 @@ Bootstrap 5 HTML CSS Template
                 event.preventDefault(); // Prevent any default behavior (though not strictly necessary for button type="button")
                 window.location.href = '/'; // Redirect to index.html
             });
-            function addUser() {
-            document.getElementById('loader').style.display = 'block';
-            var user = {
-                firstName: document.getElementById('booking-form-name').value,
-                lastName: document.getElementById('booking-form-last-name').value,
-                email: document.getElementById('booking-form-email').value,
-                mobile: document.getElementById('mobile').value,
-                password: document.getElementById('booking-form-password').value
-                // Add other fields as needed
-            };
+           function addUser() {
+    document.getElementById('loader').style.display = 'block';
 
-            fetch('/addUser', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(user),
-            })
-            .then(response => {
-            document.getElementById('loader').style.display = 'none';
-                if (response.ok) {
-                    return response.text();
-                } else {
-                    throw new Error('Failed to add user');
-                }
-            })
-            .then(data => {
-                alert(data); // Show the response message in a popup
-                window.location.href = '/signIn'; // Redirect to another page
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Failed to add user'); // Show an error message in case of failure
-            }).finally(() => {
-                // Hide the loader
+    // Fetch the CSRF token from the hidden input field
+    var csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+    var csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
 
-            });
+    var user = {
+        firstName: document.getElementById('booking-form-name').value,
+        lastName: document.getElementById('booking-form-last-name').value,
+        username: document.getElementById('booking-form-email').value,
+        phoneNumber: document.getElementById('mobile').value,
+        password: document.getElementById('booking-form-password').value
+        // Add other fields as needed
+    };
+
+    fetch('/addUser', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            // Include the CSRF token in the headers
+            [csrfHeader]: csrfToken
+        },
+        body: JSON.stringify(user),
+    })
+    .then(response => {
+        document.getElementById('loader').style.display = 'none';
+        if (response.ok) {
+            return response.text();
+        } else {
+            throw new Error('Failed to add user');
+        }
+    })
+    .then(data => {
+        alert(data); // Show the response message in a popup
+        window.location.href = '/signIn'; // Redirect to another page
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to add user'); // Show an error message in case of failure
+    });
+
         }
         </script>
     </body>

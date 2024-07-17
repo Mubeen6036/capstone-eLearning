@@ -3,6 +3,8 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="_csrf" th:content="${_csrf.token}" />
+        <meta name="_csrf_header" th:content="${_csrf.headerName}" />
 
         <meta name="description" content="">
         <meta name="author" content="">
@@ -53,6 +55,7 @@ Bootstrap 5 HTML CSS Template
                                         </div>
                                         <div class="booking-form-body">
                                             <div class="row">
+                                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                                                 <div class="col-lg-12 col-12">
                                                     <input type="email" name="booking-form-email" id="booking-form-email" class="form-control" placeholder="Email" required>
                                                     <input type="password" name="booking-form-password" id="booking-form-password" class="form-control" placeholder="Password" required>
@@ -91,59 +94,89 @@ Bootstrap 5 HTML CSS Template
                 event.preventDefault(); // Prevent any default behavior (though not strictly necessary for button type="button")
                 window.location.href = '/'; // Redirect to index.html
             });
-        
-            // Form submission handling for the Submit button (unchanged)
-<!--            document.getElementById('registration-form').addEventListener('submit', function(event) {-->
-<!--                event.preventDefault(); // Prevent form from submitting the default way-->
-<!--                var email = document.getElementById('booking-form-email').value;-->
-<!--                var password = document.getElementById('booking-form-password').value;-->
-<!--        -->
-<!--                if (email === 'krushan1188@gmail.com' && password === '123') {-->
-<!--                    window.location.href = 'Courses.html';-->
-<!--                } else {-->
-<!--                    alert('Incorrect details');-->
-<!--                }-->
-<!--            });-->
+
 
             function login() {
-            document.getElementById('loader').style.display = 'block';
-            var user = {
-                email: document.getElementById('booking-form-email').value,
-                password: document.getElementById('booking-form-password').value
-                // Add other fields as needed
-            };
+    document.getElementById('loader').style.display = 'block';
 
-            fetch('/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(user),
-            })
-            .then(response => {
+    // Fetch CSRF token and header
+    var csrfTokenMeta = document.querySelector('meta[name="_csrf"]');
+    var csrfHeaderMeta = document.querySelector('meta[name="_csrf_header"]');
+
+    if (csrfTokenMeta && csrfHeaderMeta) {
+        var csrfToken = csrfTokenMeta.getAttribute('content');
+        var csrfHeader = csrfHeaderMeta.getAttribute('content');
+
+        var user = {
+            username: document.getElementById('booking-form-email').value,
+            password: document.getElementById('booking-form-password').value
+        };
+
+        fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                [csrfHeader]: csrfToken
+            },
+            body: JSON.stringify(user),
+        })
+        .then(response => {
             document.getElementById('loader').style.display = 'none';
-                if (response.ok) {
-                    return response.text();
-                } else {
-                    throw new Error('Failed to login');
-                }
-            })
-            .then(data => {
-                if(data=="Login Successful"){
-                    alert(data); // Show the response message in a popup
-                    window.location.href = '/courses'; // Redirect to another page
-                }else{
-                    alert("You have entered wrong details");
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('You have entered wrong details to login'); // Show an error message in case of failure
-            }).finally(() => {
-                // Hide the loader
-
-            });
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Failed to login');
             }
+        })
+        .then(data => {
+                if (data.token) { // Check if the response contains a token
+                    localStorage.setItem('jwtToken', data.token); // Store the token in localStorage
+                    redirectToCoursesWithJwtToken() // Redirect to another page
+                } else {
+                    alert("Login failed");
+                }
+            })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('You have entered wrong details to login'); // Show an error message in case of failure
+        }).finally(() => {
+            // Hide the loader
+        });
+    } else {
+        console.error('CSRF meta tags not found');
+        alert('CSRF meta tags not found. Please refresh the page and try again.');
+        document.getElementById('loader').style.display = 'none';
+    }
+            }
+            function redirectToCoursesWithJwtToken() {
+    // Retrieve JWT token from storage
+    var jwtToken = localStorage.getItem('jwtToken');
+
+    if (jwtToken) {
+        // Redirect to /courses with JWT token in Authorization header
+        fetch('/courses', {
+            headers: {
+                'Authorization': 'Bearer ' + jwtToken
+            }
+        })
+        .then(response => {
+            // Handle response as needed
+            if (response.ok) {
+                // Redirect to /courses
+                window.location.href = '/courses';
+            } else {
+                throw new Error('Failed to redirect to courses');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Handle error scenario
+        });
+    } else {
+        console.error('JWT token not found');
+        // Handle scenario where JWT token is missing
+    }
+}
         </script>
         
     </body>

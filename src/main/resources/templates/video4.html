@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Computer Science Video Lectures</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        font: optional;
+    }
+    .header, .footer {
+        background-color: #06192b;
+        text-align: center;
+        padding: 10px 0;
+    }
+    .header h1, .footer p {
+        color: white;
+    }
+    .content {
+        padding: 20px;
+        text-align: center;
+    }
+    .dropdown-container {
+        margin-bottom: 20px;
+    }
+    .video-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    video {
+        width: 100%;
+        height: auto;
+    }
+    .next-button-container {
+        margin-top: 20px;
+    }
+    .next-button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border: none;
+        border-radius: 4px;
+        display: none; /* Initially hidden */
+    }
+    .next-button:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
+    .next-button:hover:enabled {
+        background-color: #45a049;
+    }
+    .checkbox-container {
+        margin-top: 10px;
+    }
+</style>
+
+<body>
+<div class="header">
+    <h1>IT Management Video Lectures</h1>
+</div>
+<div class="content">
+    <div class="dropdown-container">
+        <label for="course-select"><strong><h1>Subject 1 - Agile Problem Solving</h1></strong></label>
+    </div>
+    <div class="video-container">
+        <video id="course-video-1" controls>
+            <source id="video-source-1" src="videos/10.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <div class="checkbox-container">
+        <input type="checkbox" id="checkbox-1" disabled> Watched
+    </div>
+    <br><br>
+    <div class="dropdown-container">
+        <label for="course-select"><strong><h1>Subject 2 - Scrum Essentials</strong></h1></label>
+    </div>
+    <div class="video-container">
+        <video id="course-video-2" controls>
+            <source id="video-source-2" src="videos/11.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <div class="checkbox-container">
+        <input type="checkbox" id="checkbox-2" disabled> Watched
+    </div>
+    <br><br>
+    <div class="dropdown-container">
+        <label for="course-select"><strong><h1>Subject 3 - Kanban Methodology</h1></strong></label>
+    </div>
+    <div class="video-container">
+        <video id="course-video-3" controls>
+            <source id="video-source-3" src="videos/12.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <div class="checkbox-container">
+        <input type="checkbox" id="checkbox-3" disabled> Watched
+    </div>
+    <div class="next-button-container">
+        <button id="next-button" class="next-button" onclick="window.location.href='Quiz4.html'" disabled>Next</button>
+    </div>
+</div>
+<div class="footer">
+    <p>&copy; 2024 E-Learning Website</p>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const video1 = document.getElementById('course-video-1');
+        const video2 = document.getElementById('course-video-2');
+        const video3 = document.getElementById('course-video-3');
+        const checkbox1 = document.getElementById('checkbox-1');
+        const checkbox2 = document.getElementById('checkbox-2');
+        const checkbox3 = document.getElementById('checkbox-3');
+        const nextButton = document.getElementById('next-button');
+
+        video1.addEventListener('ended', () => {
+            checkbox1.checked = true;
+            checkAllWatched();
+        });
+
+        video2.addEventListener('ended', () => {
+            checkbox2.checked = true;
+            checkAllWatched();
+        });
+
+        video3.addEventListener('ended', () => {
+            checkbox3.checked = true;
+            checkAllWatched();
+        });
+
+        function checkAllWatched() {
+            if (checkbox1.checked && checkbox2.checked && checkbox3.checked) {
+                nextButton.disabled = false;
+                nextButton.style.display = 'inline-block'; // Make the button visible
+            }
+        }
+    });
+</script>
+</body>
+</html>

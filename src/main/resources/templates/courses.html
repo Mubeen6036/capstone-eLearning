@@ -4,7 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -35,6 +36,11 @@ https://www.tooplate.com/view/2137-barista-cafe
 Bootstrap 5 HTML CSS Template
 
 -->
+    <script>
+        function callApi() {
+            window.location.href = '/';
+        }
+    </script>
 </head>
 
 <body class="reservation-page">
@@ -50,72 +56,21 @@ Bootstrap 5 HTML CSS Template
                 <div class="row">
                     <form class="custom-form booking-form" id="registration-form" action="#" method="post" role="form">
                         <div class="text-center mb-4 pb-lg-2">
-                            <button type="button" class="btn btn-secondary float-end" onclick="history.back()">Home</button>
+                                <button type="button" class="btn btn-secondary float-end" onclick="callApi()">Home</button>
                             <h2 class="text-white">Courses</h2>
                             
                         </div>
+
+
                         <div class="container">
-                            <div class="row justify-content-center">
-                                <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                    <div class="team-block-wrap">
-                                        <div class="team-block-info d-flex flex-column">
-                                            <div class="d-flex mt-auto mb-3">
-                                                <h4 class="text-white mb-0">Computer Science</h4>
-                                            </div>
-                                            <p class="text-white mb-0">Computer systems, network security, database
-                                                systems</p>
-                                        </div>
-                                        <div class="team-block-image-wrap">
-                                            <img th:src="@{/images/team/IT.jpg}" class="team-block-image img-fluid" alt="">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                    <div class="team-block-wrap">
-                                        <div class="team-block-info2 d-flex flex-column">
-                                            <div class="d-flex mt-auto mb-3">
-                                                <h4 class="text-white mb-0">Business Management</h4>
-                                            </div>
-                                            <p class="text-white mb-0">Planning, Organizing, and Controlling the
-                                                activities of a business</p>
-                                        </div>
-                                        <div class="team-block-image-wrap">
-                                            <img th:src="@{/images/team/Business.png}" class="team-block-image img-fluid"
-                                                 alt="">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-md-6 col-12 mb-4">
-                                    <div class="team-block-wrap">
-                                        <div class="team-block-info3 d-flex flex-column">
-                                            <div class="d-flex mt-auto mb-3">
-                                                <h4 class="text-white mb-0">Civil Engineering</h4>
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                            <div class="row justify-content-center" id="courses-container">
 
-                                            </div>
-                                            <p class="text-white mb-0"> Design, infrastructure, deepest tunnels and
-                                                sustainability</p>
-                                        </div>
-                                        <div class="team-block-image-wrap">
-                                            <img th:src="@{/images/team/Civil.jpg}" class="team-block-image img-fluid" alt="">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-3 col-md-6 col-12">
-                                    <div class="team-block-wrap">
-                                        <div class="team-block-info4 d-flex flex-column">
-                                            <div class="d-flex mt-auto mb-3">
-                                                <h4 class="text-white mb-0">IT Management</h4>
-                                            </div>
-                                            <p class="text-white mb-0">Kanban, Agile Mathology, Scrum and Leadership</p>
-                                        </div>
 
-                                        <div class="team-block-image-wrap">
-                                            <img th:src="@{/images/team/ITM.jpg}" class="team-block-image img-fluid" alt="">
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
+
+
                     </form>
                 </div>
             </div>
@@ -132,7 +87,154 @@ Bootstrap 5 HTML CSS Template
     <script th:src="@{/js/click-scroll.js}"></script>
     <script th:src="@{/js/vegas.min.js}"></script>
     <script th:src="@{/js/custom.js}"></script>
+    <script>
+        function getJwtToken() {
+    return localStorage.getItem('jwtToken');
+}
 
+function authenticatedFetch(url, options = {}) {
+    options.headers = options.headers || {};
+    options.headers['Authorization'] = 'Bearer ' + getJwtToken();
+    return fetch(url, options);
+}
+
+function fetchCourses() {
+    authenticatedFetch('/courselist')
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Failed to fetch courses');
+            }
+        })
+        .then(data => {
+            const coursesContainer = document.getElementById('courses-container');
+            if (!coursesContainer) {
+                console.error('Courses container not found!');
+                return;
+            }
+
+            coursesContainer.innerHTML = data.map(course => {
+                let courseHtml = '';
+                if (course.courseName === 'Computer Science') {
+                    courseHtml = `
+                        <div class="col-lg-3 col-md-6 col-12 mb-4 course-item" data-course-name="${course.courseName}" data-course-id="${course.courseId}">
+                            <div class="team-block-wrap">
+                                <div class="team-block-info d-flex flex-column">
+                                    <div class="d-flex mt-auto mb-3">
+                                        <h4 class="text-white mb-0">Computer Science</h4>
+                                    </div>
+                                    <p class="text-white mb-0">Computer systems, network security, database systems</p>
+                                </div>
+                                <div class="team-block-image-wrap">
+                                    <img src="/images/team/IT.jpg" class="team-block-image img-fluid" alt="Computer Science">
+                                </div>
+                            </div>
+                        </div>`;
+                } else if (course.courseName === 'Business Management') {
+                    courseHtml = `
+                        <div class="col-lg-3 col-md-6 col-12 mb-4 course-item" data-course-name="${course.courseName}" data-course-id="${course.courseId}">
+                            <div class="team-block-wrap">
+                                <div class="team-block-info2 d-flex flex-column">
+                                    <div class="d-flex mt-auto mb-3">
+                                        <h4 class="text-white mb-0">Business Management</h4>
+                                    </div>
+                                    <p class="text-white mb-0">Planning, Organizing, and Controlling the activities of a business</p>
+                                </div>
+                                <div class="team-block-image-wrap">
+                                    <img src="/images/team/Business.png" class="team-block-image img-fluid" alt="Business Management">
+                                </div>
+                            </div>
+                        </div>`;
+                } else if (course.courseName === 'Civil Engineering') {
+                    courseHtml = `
+                        <div class="col-lg-3 col-md-6 col-12 mb-4 course-item" data-course-name="${course.courseName}" data-course-id="${course.courseId}">
+                            <div class="team-block-wrap">
+                                <div class="team-block-info3 d-flex flex-column">
+                                    <div class="d-flex mt-auto mb-3">
+                                        <h4 class="text-white mb-0">Civil Engineering</h4>
+                                    </div>
+                                    <p class="text-white mb-0">Design, infrastructure, deepest tunnels and sustainability</p>
+                                </div>
+                                <div class="team-block-image-wrap">
+                                    <img src="/images/team/Civil.jpg" class="team-block-image img-fluid" alt="Civil Engineering">
+                                </div>
+                            </div>
+                        </div>`;
+                } else if (course.courseName === 'IT Management') {
+                    courseHtml = `
+                        <div class="col-lg-3 col-md-6 col-12 course-item" data-course-name="${course.courseName} data-course-id="${course.courseId}">
+                            <div class="team-block-wrap">
+                                <div class="team-block-info4 d-flex flex-column">
+                                    <div class="d-flex mt-auto mb-3">
+                                        <h4 class="text-white mb-0">IT Management</h4>
+                                    </div>
+                                    <p class="text-white mb-0">Kanban, Agile Methodology, Scrum and Leadership</p>
+                                </div>
+                                <div class="team-block-image-wrap">
+                                    <img src="/images/team/ITM.jpg" class="team-block-image img-fluid" alt="IT Management">
+                                </div>
+                            </div>
+                        </div>`;
+                }
+                return courseHtml;
+            }).join('');
+
+            // Add click event listeners to the course items
+            const courseItems = document.querySelectorAll('.course-item');
+            courseItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const courseName = this.getAttribute('data-course-id');
+                    handleCourseClick(courseName);
+                });
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to fetch courses');
+        });
+}
+function getCsrfToken() {
+    return document.querySelector("meta[name='_csrf']").getAttribute("content");
+}
+
+function getCsrfHeader() {
+    return document.querySelector("meta[name='_csrf_header']").getAttribute("content");
+}
+function handleCourseClick(courseName) {
+    const csrfToken = getCsrfToken();
+    const csrfHeader = getCsrfHeader();
+    authenticatedFetch('/isRegistered', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' , [csrfHeader]: csrfToken},
+        body: JSON.stringify({ courseId: courseName })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (!data.registered) {
+            // Register the user for the course
+            return authenticatedFetch('/registerCourse', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' , [csrfHeader]: csrfToken},
+                body: JSON.stringify({ courseId: courseName })
+            });
+        }
+    })
+    .then(() => {
+        // Redirect to video.html
+        window.location.href = '/video';
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to handle course registration');
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    fetchCourses();
+});
+
+    </script>
     <!-- Custom JavaScript to handle form submission -->
 
 </body>
