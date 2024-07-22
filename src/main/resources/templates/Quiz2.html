@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Business Management</title>
     <link rel="stylesheet" href="styles.css">
@@ -129,6 +131,7 @@
 <body>
 <div class="header">
     <h1>Business Management Quiz</h1>
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 </div>
 <form id="quiz-form" style="padding-left: 350px;">
     <div class="quiz-question" id="question1">
@@ -204,11 +207,62 @@
 <script src="js/vegas.min.js"></script>
 <script src="js/custom.js"></script>
 <script>
-    // Custom JavaScript for quiz submission
-    document.getElementById('submit-quiz').addEventListener('click', function () {
+const courseId = 'cb47a7c1-0b3c-469e-822f-c4c41e150cb8';
+    // Function to get CSRF token and header name from meta tags
+    function getCsrfToken() {
+        return document.querySelector("meta[name='_csrf']").getAttribute("content");
+    }
+
+    function getCsrfHeader() {
+        return document.querySelector("meta[name='_csrf_header']").getAttribute("content");
+    }
+
+    // Function to get JWT token from local storage
+    function getJwtToken() {
+        return localStorage.getItem('jwtToken');
+    }
+
+    // Function to perform authenticated fetch
+    function authenticatedFetch(url, options = {}) {
+        options.headers = options.headers || {};
+        options.headers['Authorization'] = 'Bearer ' + getJwtToken();
+        const csrfToken = getCsrfToken();
+        const csrfHeader = getCsrfHeader();
+        options.headers['Content-Type'] = 'application/json';
+        options.headers[csrfHeader] = csrfToken;
+        return fetch(url, options);
+    }
+
+    function completeQuiz() {
+        authenticatedFetch('/complete', {
+            method: 'DELETE',
+            body: JSON.stringify({ courseId: courseId })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to complete quiz');
+            }
+            // Handle success - show scorecard or navigate to another page
+            showScoreCard();
+        })
+        .catch(error => {
+            console.error('Error completing quiz:', error);
+        });
+    }
+    function delayedAction(){
+        alert("Congrats!! You have completed the Course!! You will be deregistered from this course and redirected to Courses page");
+        window.location.href = '/courses';
+    }
+
+    function showScoreCard() {
+        // This function should be defined to handle displaying the scorecard
+        // For simplicity, it is left blank here
+    }
+
+    document.getElementById('submit-quiz').addEventListener('click', function() {
         // Initialize variables for correct answers and total marks
         let correctAnswers = 0;
-        let totalQuestions = 5; // Assuming there are 5 questions in total
+        const totalQuestions = 5; // Assuming there are 5 questions in total
 
         // Array to store user's selected answers
         let userSelections = [];
@@ -219,10 +273,13 @@
             let selectedOption = document.querySelector(`#${questionId} input[type="radio"]:checked`);
 
             if (selectedOption) {
-                userSelections.push(selectedOption.parentElement.innerText.trim());
-                let questionNum = selectedOption.name.slice(1);
-                let correctOption = document.querySelector(`#${questionId} input[type="radio"][value="a"]`);
-                if (selectedOption.value === 'a') {
+                userSelections.push({
+                    question: questionId,
+                    answer: selectedOption.value
+                });
+
+                // Check if the selected option is correct
+                if (selectedOption.value === 'a') { // Assuming 'a' is the correct answer
                     correctAnswers++;
                 }
             }
@@ -239,15 +296,18 @@
         document.getElementById('score-display').style.display = 'block';
 
         // Disable all radio buttons
-        document.querySelectorAll('input[type="radio"]').forEach(function (radio) {
+        document.querySelectorAll('input[type="radio"]').forEach(function(radio) {
             radio.disabled = true;
         });
 
+
         // Show next button if percentage >= 60.00%
-        if (percentage >= 60.00) {
-            document.getElementById('next-button').style.display = 'inline-block';
-        }
+
+        completeQuiz();
+        setTimeout(delayedAction, 1000);
+
     });
+
 </script>
 
 </body>

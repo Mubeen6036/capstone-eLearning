@@ -1,6 +1,7 @@
 package com.capestone.learning.configuration;
 
 import com.datastax.oss.driver.api.core.CqlSession;
+import com.datastax.oss.driver.api.core.config.DefaultDriverOption;
 import com.datastax.oss.driver.api.core.config.DriverConfigLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,6 +21,7 @@ import org.springframework.data.cassandra.repository.config.EnableCassandraRepos
 
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.time.Duration;
 
 @Configuration
 //@EnableCassandraRepositories(basePackages = "com.capestone.learning.repository")
@@ -45,6 +47,11 @@ public class CassandraConfig extends AbstractCassandraConfiguration {
                         .withCloudSecureConnectBundle(Paths.get(resource.getURI()))
                         .withAuthCredentials(clientId, clientSecret)
                         .withKeyspace(getKeyspaceName())
+                        .withConfigLoader(
+                                DriverConfigLoader.programmaticBuilder()
+                                        .withDuration(DefaultDriverOption.CONNECTION_INIT_QUERY_TIMEOUT, Duration.ofSeconds(20))
+                                        .withDuration(DefaultDriverOption.REQUEST_TIMEOUT, Duration.ofSeconds(20))
+                                        .build())
                         .build();
             } catch (IOException e) {
                 throw new RuntimeException(e);

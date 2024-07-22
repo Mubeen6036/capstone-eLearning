@@ -1,4 +1,4 @@
-package com.capestone.learning.requestout;
+package com.capestone.learning.response;
 
 public class CourseRegistrationResponse {
     private boolean registered;

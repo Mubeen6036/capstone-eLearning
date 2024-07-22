@@ -9,4 +9,9 @@ import java.util.UUID;
 public interface RegistrationRepository extends CassandraRepository<Registration, UUID> {
     public List<Registration> findByCourseIdAndUsername(UUID courseId, String username);
     public List<Registration> findByUsername(String username);
+
+    void deleteByUsernameAndCourseId(String username, UUID courseId);
+
+    class UserQuizzesRepository {
+    }
 }

@@ -4,7 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -93,6 +94,11 @@ Bootstrap 5 HTML CSS Template
                                    
                                 </a>
                             </div>
+                            <div class="ms-lg-3">
+                                <a class="btn custom-btn custom-border-btn2" id="logout-button" href="javascript:void(0);">
+                                    Logout
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </nav></div>
@@ -149,6 +155,46 @@ Bootstrap 5 HTML CSS Template
     <script th:src="@{/js/click-scroll.js}"></script>
     <script th:src="@{/js/vegas.min.js}"></script>
     <script th:src="@{/js/custom.js}"></script>
+    <script>
+    function getCsrfToken() {
+            return document.querySelector("meta[name='_csrf']").getAttribute("content");
+        }
+
+        function getCsrfHeader() {
+            return document.querySelector("meta[name='_csrf_header']").getAttribute("content");
+        }
+
+        function getJwtToken() {
+            return localStorage.getItem('jwtToken');
+        }
+
+        document.getElementById('logout-button').addEventListener('click', function() {
+            // Clear JWT token from local storage
+            localStorage.removeItem('jwtToken');
+
+            // Call logout API
+            fetch('/logout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    [getCsrfHeader()]: getCsrfToken() // Include CSRF token in headers
+                },
+                credentials: 'include' // Include credentials if your API requires it
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Redirect to login page or home page
+                    window.location.href = '/signIn'; // Adjust as needed
+                } else {
+                    alert('Logout failed');
+                }
+            })
+            .catch(error => {
+                console.error('Error logging out:', error);
+                alert('Logout failed');
+            });
+        });
+    </script>
 </body>
 
 </html>

@@ -162,8 +162,7 @@ function fetchCourses() {
                             </div>
                         </div>`;
                 } else if (course.courseName === 'IT Management') {
-                    courseHtml = `
-                        <div class="col-lg-3 col-md-6 col-12 course-item" data-course-name="${course.courseName} data-course-id="${course.courseId}">
+                    courseHtml = `<div class="col-lg-3 col-md-6 col-12 course-item" data-course-name="${course.courseName}" data-course-id="${course.courseId}">
                             <div class="team-block-wrap">
                                 <div class="team-block-info4 d-flex flex-column">
                                     <div class="d-flex mt-auto mb-3">
@@ -185,6 +184,7 @@ function fetchCourses() {
             courseItems.forEach(item => {
                 item.addEventListener('click', function() {
                     const courseName = this.getAttribute('data-course-id');
+                    console.log(courseName);
                     handleCourseClick(courseName);
                 });
             });
@@ -222,7 +222,16 @@ function handleCourseClick(courseName) {
     })
     .then(() => {
         // Redirect to video.html
-        window.location.href = '/video';
+        if(courseName=='116580e1-07fd-4661-a6b7-c7fd1d302622'){
+            window.location.href = '/video';
+        }else if(courseName=='cb47a7c1-0b3c-469e-822f-c4c41e150cb8'){
+            window.location.href = '/video2';
+        }else if(courseName=='4e15e2b9-2837-442b-908b-249d3e755265'){
+            window.location.href = '/video3';
+        }else if(courseName=='d16e2574-f8d1-488c-b243-6624054beea7'){
+            window.location.href = '/video4';
+        }
+
     })
     .catch(error => {
         console.error('Error:', error);

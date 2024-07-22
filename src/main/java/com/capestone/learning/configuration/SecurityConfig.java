@@ -53,7 +53,7 @@ public class SecurityConfig {
         http
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/index", "/register", "/faculty/**", "/isRegistered", "/**").permitAll()
+                                .requestMatchers("/index", "/register", "/faculty/**", "/isRegistered", "/**", "/videos").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .formLogin(formLogin ->
