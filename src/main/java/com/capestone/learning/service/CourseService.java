@@ -35,15 +35,22 @@ public class CourseService {
 
         // Retrieve available courses based on user attributes
         List<Course> availableCourses;
+        List<Registration> registrations;
         if (isAdmin) {
             // Admin sees all courses
             availableCourses = courseRepository.findAll();
         } else {
             // Regular user sees only available courses
-            availableCourses = courseRepository.findByAvailable(true);
-            List<Registration> registrations = registrationRepository.findByUsername(username);
-            List<String> courses= registrations.stream().map(x->x.getCourseId().toString()).collect(Collectors.toCollection(ArrayList<String>::new));
-            availableCourses.addAll(courseRepository.findAllById(courses));
+            //
+
+            registrations = registrationRepository.findByUsername(username);
+            if(registrations != null && registrations.size() > 0) {
+                List<String> courses = registrations.stream().map(x -> x.getCourseId().toString()).collect(Collectors.toCollection(ArrayList<String>::new));
+                return courseRepository.findAllById(courses);
+            }else{
+                availableCourses = courseRepository.findAll();
+            }
+
         }
 
         return availableCourses;
